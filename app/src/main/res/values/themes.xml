@@ -1,9 +1,38 @@
+
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Grupo1_TP4" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+    <style name="Base.Theme.Grupo1_TP4" parent="Theme.Material3.DayNight">
+        <!-- ESTILO ACTION BAR -->
+        <item name="actionBarStyle">@style/ActionBarCustom</item>
+        <!-- ESTILO TAB LAYOUT -->
+        <item name="tabStyle">@style/CustomTabLayout</item>
     </style>
 
     <style name="Theme.Grupo1_TP4" parent="Base.Theme.Grupo1_TP4" />
+
+    <!-- CUSTOMISO EL COLOR DEL ACTION BAR -->
+    <style name="ActionBarCustom" parent="Widget.AppCompat.ActionBar.Solid">
+        <!-- SETEO EL COLOR DE FONDO DEL ACTION BAR -->
+        <item name="background">@color/actionBarBackground</item>
+        <!--  COLOR DE TEXTO ACTIONBAR -->
+        <item name="titleTextStyle">@style/ActionBarTitleText</item>
+    </style>
+
+    <!-- COLOR TITULO ACTIONBAR -->
+    <style name="ActionBarTitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- CUSTOMISO EL COLOR DEL TAB LAYOUT -->
+    <style name="CustomTabLayout" parent="Widget.Design.TabLayout">
+        <!-- COLOR DE FONDO DEL TAB LAYOUT -->
+        <item name="tabBackground">@color/actionBarBackground</item>
+        <!-- COLOR DE TEXTO DEL TAB LAYOUT -->
+        <item name="tabTextColor">@android:color/white</item>
+        <!-- COLOR DE TEXTO TAB SELECCIONADO -->
+        <item name="tabSelectedTextColor">@android:color/white</item>
+        <!-- SEÑALADOR DE SELECCION -->
+        <item name="tabIndicatorColor">@color/cyan</item>
+    </style>
 </resources>
