@@ -1,15 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragmentoAlta">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <EditText
+        android:id="@+id/ptID"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Fragmento alta" />
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="@string/altaID" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/ptNombreProducto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="@string/altaNombreProducto" />
+
+    <EditText
+        android:id="@+id/ptStock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="@string/altaSTOCK" />
+
+    <TextView
+        android:id="@+id/tvCategoria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/altaCategoria"
+        android:textSize="20sp" />
+
+    <Spinner
+        android:id="@+id/spCategorias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp" />
+
+    <Button
+        android:id="@+id/btnAgregar"
+        android:layout_width="216dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:text="@string/altaBtnAgregar" />
+</LinearLayout>
