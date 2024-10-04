@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.grupo1_tp4.conexion.DataCategoriaMainActivity;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,4 +42,10 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adaptadorViewPager);
 
     }
+
+    public void cargarCategorias() {
+        DataCategoriaMainActivity dataCategoriaMainActivity = new DataCategoriaMainActivity(null,this);
+        dataCategoriaMainActivity.obtenerTodos();
+    }
+
 }

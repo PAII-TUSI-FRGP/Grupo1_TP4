@@ -2,11 +2,20 @@ package com.example.grupo1_tp4;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
+import com.example.grupo1_tp4.conexion.DataCategoriaMainActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +23,8 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class fragmentoAlta extends Fragment {
+
+    private Spinner spCategorias;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,4 +72,32 @@ public class fragmentoAlta extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fragmento_alta, container, false);
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Referencia al Spinner en el layout del fragmento
+        spCategorias = view.findViewById(R.id.spCategorias);
+
+        // Llama al método cargarCategorias() de la actividad para cargar las categorías
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity != null) {
+            // Cargar las categorías
+            mainActivity.cargarCategorias();
+
+            // Aquí puedes actualizar el Spinner después de cargar los datos
+            List<String> listaCategorias = new ArrayList<>();
+
+            // Ejemplo: Cargar datos en el Spinner después de obtener las categorías
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                    getContext(),
+                    android.R.layout.simple_spinner_item,
+                    listaCategorias
+            );
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spCategorias.setAdapter(adapter);
+        }
+    }
+
 }

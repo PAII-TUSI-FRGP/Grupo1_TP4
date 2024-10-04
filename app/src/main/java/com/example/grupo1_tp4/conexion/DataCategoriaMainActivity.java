@@ -86,6 +86,7 @@ public class DataCategoriaMainActivity {
                 String sql = "SELECT * FROM " + DataDB.TABLE_CATEGORIA;
                 Log.d("SENTENCIASQL", sql);
                 Class.forName(DataDB.driver);
+                Log.d("SENTENCIASQL", DataDB.urlMySQL);
                 Connection connection = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(sql);
