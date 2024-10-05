@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Campo para buscar por ID -->
+    <EditText
+        android:id="@+id/article_id_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="ID del artículo" />
+
+    <Button
+        android:id="@+id/search_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Buscar" />
+
+    <!-- Campos ocultos inicialmente -->
+    <EditText
+        android:id="@+id/name_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre del artículo"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/stock_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Stock"
+        android:inputType="number"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/category_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Categoría"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Guardar cambios"
+        android:visibility="gone"
+        />
+</LinearLayout>
