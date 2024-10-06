@@ -101,7 +101,7 @@ public class DataCategoriaMainActivity {
                 connection.close();
 
             } catch (Exception e) {
-                Log.d("SENTENCIASQL", "ALGO SALIO MAL");
+                Log.d("SENTENCIASQL", "ALGO SALIO MAL!");
                 e.printStackTrace();
             }
 
