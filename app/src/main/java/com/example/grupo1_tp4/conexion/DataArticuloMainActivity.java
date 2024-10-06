@@ -24,7 +24,7 @@ public class DataArticuloMainActivity {
         this.context = context;
     }
 
-    public void insertar(Articulo articulo) {
+    public void insertar(Articulo articulo, ArticuloCallback callback) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             try {
@@ -36,17 +36,25 @@ public class DataArticuloMainActivity {
                 statement.executeUpdate(sql);
                 statement.close();
                 connection.close();
+
+                // Llama al callback en caso de éxito
+                new android.os.Handler(context.getMainLooper()).post(() -> {
+                    // Llama al método onArticuloObtenido del callback
+                    callback.onArticuloObtenido(articulo); // Llama al callback
+                    Log.d("SENTENCIASQL", "ARTICULO INSERTADO");
+                });
             } catch (Exception e) {
                 Log.d("SENTENCIASQL", "ALGO SALIO MAL");
                 e.printStackTrace();
+
+                // Llama al callback en caso de error
+                new android.os.Handler(context.getMainLooper()).post(() -> {
+                    callback.onError(e.getMessage()); // Llama al método onError del callback
+                });
             }
-            // Actualiza la UI en el hilo principal
-            new android.os.Handler(context.getMainLooper()).post(() -> {
-                // Actualiza la UI aquí
-                Log.d("SENTENCIASQL", "ARTICULO INSERTADO");
-            });
         });
     }
+
 
     public interface ArticuloCallback {
         void onArticuloObtenido(Articulo articulo);
