@@ -6,9 +6,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- fragment Alta -->
-    <string name="altaID">ID</string>
-    <string name="altaNombreProducto">NOMBRE PRODUCTO</string>
-    <string name="altaSTOCK">STOCK</string>
+    <string name="altaID"> ID</string>
+    <string name="altaNombreProducto"> NOMBRE PRODUCTO</string>
+    <string name="altaSTOCK"> STOCK</string>
     <string name="altaCategoria">CATEGORIA</string>
     <string name="altaBtnAgregar">AGREGAR</string>
 
