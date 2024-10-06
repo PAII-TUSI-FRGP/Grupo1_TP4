@@ -31,7 +31,6 @@ public class DataCategoriaMainActivity {
                 Class.forName(DataDB.driver);
                 Connection connection = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
                 Statement statement = connection.createStatement();
-                /*statement.executeUpdate("INSERT INTO " + DataDB.TABLE_CATEGORIA + "(" + DataDB.COL_CATEGORIA_DESCRIPCION + ")" + " VALUES ('" + categoria.getDescripcion() + "')");*/
                 statement.executeUpdate(sql);
 
                 statement.close();
@@ -78,7 +77,7 @@ public class DataCategoriaMainActivity {
         });
     }
 
-    public void obtenerTodos() {
+    public void obtenerTodos(DataCategoriaMainActivity.CategoriaCallback callback) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             List<Categoria> listaCategorias = new ArrayList<>();
@@ -98,20 +97,22 @@ public class DataCategoriaMainActivity {
                 resultSet.close();
                 statement.close();
                 connection.close();
-
             } catch (Exception e) {
-                Log.d("SENTENCIASQL", "ALGO SALIO MAL");
+                Log.d("SENTENCIASQL", "ALGO SALIO MAL!");
                 e.printStackTrace();
             }
-
             // Actualiza la UI en el hilo principal
             new android.os.Handler(context.getMainLooper()).post(() -> {
-                // Actualiza la UI aquí
                 Log.d("SENTENCIASQL", "CATEGORIAS: " + listaCategorias.size());
+                callback.onCategoriasObtenidas(listaCategorias); // Llama al callback
             });
-
         });
     }
+    public interface CategoriaCallback {
+        void onCategoriasObtenidas(List<Categoria> categorias);
+        void onError(String mensaje);
+    }
+
 
     public void actualizarPorId(Categoria categoria) {
         ExecutorService executor = Executors.newSingleThreadExecutor();

@@ -2,25 +2,39 @@ package com.example.grupo1_tp4;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link fragmentoAlta#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.example.grupo1_tp4.conexion.DataArticuloMainActivity;
+import com.example.grupo1_tp4.conexion.DataCategoriaMainActivity;
+import com.example.grupo1_tp4.entidad.Articulo;
+import com.example.grupo1_tp4.entidad.Categoria;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class fragmentoAlta extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private Spinner spCategorias;
+    private List<Categoria> categorias;
+    private EditText ptID, ptNombreProducto, ptStock;
+    private Button btnAgregar;
+    private DataArticuloMainActivity dataArticuloMainActivity;
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -28,15 +42,6 @@ public class fragmentoAlta extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment fragmentoAlta.
-     */
-    // TODO: Rename and change types and number of parameters
     public static fragmentoAlta newInstance(String param1, String param2) {
         fragmentoAlta fragment = new fragmentoAlta();
         Bundle args = new Bundle();
@@ -58,7 +63,151 @@ public class fragmentoAlta extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragmento_alta, container, false);
+        // Inflar el layout del fragmento
+        View view = inflater.inflate(R.layout.fragment_fragmento_alta, container, false);
+        // Inicializa el Spinner
+        spCategorias = view.findViewById(R.id.spCategorias); // Asegúrate de que este ID coincida con tu XML
+
+        return view;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Referencia a los campos de la interfaz
+        spCategorias = view.findViewById(R.id.spCategorias);
+        ptID = view.findViewById(R.id.ptID);
+        ptNombreProducto = view.findViewById(R.id.ptNombreProducto);
+        ptStock = view.findViewById(R.id.ptStock);
+        btnAgregar = view.findViewById(R.id.btnAgregar);
+
+        // Inicializa la clase que contiene el método insertar (DataArticuloMainActivity)
+        dataArticuloMainActivity = new DataArticuloMainActivity(null, getContext());
+
+        // Cargar las categorías en el Spinner
+        cargarCategorias();
+
+        // Asignar el evento onClick al botón Agregar
+        btnAgregar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                insertarArticulo();
+            }
+        });
+    }
+
+
+    private void cargarCategorias() {
+        DataCategoriaMainActivity dataCategoriaMainActivity = new DataCategoriaMainActivity(null, getActivity());
+        dataCategoriaMainActivity.obtenerTodos(new DataCategoriaMainActivity.CategoriaCallback() {
+            @Override
+            public void onCategoriasObtenidas(List<Categoria> categorias) {
+                fragmentoAlta.this.categorias = categorias;
+                // Inicializar el Spinner
+                Spinner spinner = getView().findViewById(R.id.spCategorias); // Cambia miSpinner por el ID real de tu Spinner
+
+                // Crear una lista para las descripciones
+                List<String> descripciones = new ArrayList<>();
+                final List<Integer> idsCategorias = new ArrayList<>(); // Lista para guardar los IDs
+
+                // Extraer descripciones e IDs
+                for (Categoria categoria : categorias) {
+                    descripciones.add(categoria.getDescripcion()); // Suponiendo que tienes un método getDescripcion()
+                    idsCategorias.add(categoria.getId()); // Suponiendo que tienes un método getId()
+                }
+
+                // Crear el ArrayAdapter
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, descripciones);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner.setAdapter(adapter);
+
+                // Manejar la selección del Spinner
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        int categoriaSeleccionadaId = idsCategorias.get(position); // Obtiene el ID de la categoría seleccionada
+                        // Aquí puedes hacer lo que necesites con el ID seleccionado
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        // No haces nada si no se selecciona nada
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String mensaje) {
+                // Manejo de errores
+                Toast.makeText(getContext(), "Error al obtener categorías: " + mensaje, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private List<Integer> categoriaIds; // Lista para almacenar los IDs de las categorías
+
+    protected void cargarSpinner(List<Categoria> categorias) {
+        List<String> descripciones = new ArrayList<>();
+        categoriaIds = new ArrayList<>(); // Inicializa la lista de IDs
+
+        for (Categoria categoria : categorias) {
+            descripciones.add(categoria.getDescripcion()); // Agrega la descripción al Spinner
+            categoriaIds.add(categoria.getId()); // Agrega el ID correspondiente
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, descripciones);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCategorias.setAdapter(adapter); // Asegúrate de tener una referencia a tu Spinner
+    }
+
+
+    // Método para insertar un artículo
+    private void insertarArticulo() {
+        // Obtener los valores de los EditText
+        String id = ptID.getText().toString();
+        String nombreProducto = ptNombreProducto.getText().toString();
+        String stock = ptStock.getText().toString();
+
+        // Verificar si hay una categoría seleccionada válida
+        int posicionSeleccionada = spCategorias.getSelectedItemPosition();
+
+        if (posicionSeleccionada >= 0) {
+            // Obtener la categoría seleccionada desde la lista de categorías
+            Categoria categoriaSeleccionada = categorias.get(posicionSeleccionada);
+            int categoriaId = categoriaSeleccionada.getId(); // Obtener el ID de la categoría seleccionada
+
+            // Verificar si los campos obligatorios están completos
+            if (nombreProducto.isEmpty() || stock.isEmpty()) {
+                Toast.makeText(getContext(), "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Crear el artículo con los datos obtenidos
+            Articulo articulo = new Articulo();
+            articulo.setId(Integer.parseInt(id)); // Suponiendo que el ID es un número
+            articulo.setNombre(nombreProducto);
+            articulo.setStock(Integer.parseInt(stock)); // Suponiendo que el stock es un número
+            articulo.setIdCategoria(categoriaId); // Usamos el ID de la categoría seleccionada
+
+            // Llamar al método insertar del DataArticuloMainActivity
+            dataArticuloMainActivity.insertar(articulo, new DataArticuloMainActivity.ArticuloCallback() {
+                @Override
+                public void onArticuloObtenido(Articulo articulo) {
+                    // Mostrar un mensaje de éxito si es necesario
+                    Toast.makeText(getContext(), "Artículo agregado con éxito", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onError(String error) {
+                    // Mostrar mensaje de error
+                    Toast.makeText(getContext(), "Error al agregar artículo: " + error, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(getContext(), "Por favor, seleccione una categoría válida", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

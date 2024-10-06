@@ -10,28 +10,28 @@
         android:id="@+id/ptID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="48dp"
         android:ems="10"
+        android:hint="@string/altaID"
         android:inputType="text"
-        android:text="@string/altaID" />
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/ptNombreProducto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="48dp"
         android:ems="10"
+        android:hint="@string/altaNombreProducto"
         android:inputType="text"
-        android:text="@string/altaNombreProducto" />
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/ptStock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="48dp"
         android:ems="10"
+        android:hint="@string/altaSTOCK"
         android:inputType="text"
-        android:text="@string/altaSTOCK" />
+        android:minHeight="48dp" />
 
     <TextView
         android:id="@+id/tvCategoria"
