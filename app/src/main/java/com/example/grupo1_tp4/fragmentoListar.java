@@ -1,64 +1,88 @@
 package com.example.grupo1_tp4;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link fragmentoListar#newInstance} factory method to
- * create an instance of this fragment.
- */
+import androidx.fragment.app.Fragment;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+
 public class fragmentoListar extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public fragmentoListar() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment fragmentoListar.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static fragmentoListar newInstance(String param1, String param2) {
-        fragmentoListar fragment = new fragmentoListar();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    private ListView listViewProductos;
+    private ArrayAdapter<String> adapter;
+    private ArrayList<String> productosList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragmento_listar, container, false);
+        View view = inflater.inflate(R.layout.fragment_fragmento_listar, container, false);
+
+        // Inicializar el ListView
+        listViewProductos = view.findViewById(R.id.listViewProductos);
+        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, productosList);
+        listViewProductos.setAdapter(adapter);
+
+        // Ejecutar la tarea asincrónica para conectarse a la base de datos y traer productos
+        new ObtenerProductosTask().execute();
+
+        return view;
+    }
+
+    // Tarea asincrónica para obtener productos de la base de datos
+    private class ObtenerProductosTask extends AsyncTask<Void, Void, ArrayList<String>> {
+
+        @Override
+        protected ArrayList<String> doInBackground(Void... voids) {
+            ArrayList<String> productos = new ArrayList<>();
+            try {
+                // Configurar la conexión a la base de datos
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection conn = DriverManager.getConnection(
+                        "jdbc:mysql://sql10.freesqldatabase.com/sql10735795",
+                        "sql10735795",
+                        "Q3yn35fQte");
+
+                // Realizar la consulta
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT nombre, stock FROM articulo");
+
+                // Agregar los productos a la lista
+                while (rs.next()) {
+                    String producto = "Nombre: " + rs.getString("nombre") + " - Stock: " + rs.getInt("stock");
+                    productos.add(producto);
+                }
+
+                // Cerrar la conexión
+                rs.close();
+                stmt.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return productos;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> productos) {
+            super.onPostExecute(productos);
+            if (productos.isEmpty()) {
+                Toast.makeText(getContext(), "No se encontraron productos", Toast.LENGTH_SHORT).show();
+            } else {
+                productosList.clear();
+                productosList.addAll(productos);
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
 }
