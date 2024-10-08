@@ -21,6 +21,7 @@ public class DataArticuloMainActivity {
     private static Context context;
 
     public DataArticuloMainActivity(Object object, Context context) {
+        this.object = object;
         this.context = context;
     }
 
@@ -149,7 +150,6 @@ public class DataArticuloMainActivity {
 
         });
     }
-
 
 
     // Método para actualizar un artículo en la base de datos
