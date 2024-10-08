@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     android:padding="16dp">
 
     <!-- Campo para buscar por ID -->
@@ -34,11 +35,10 @@
         android:inputType="number"
         android:visibility="gone" />
 
-    <EditText
-        android:id="@+id/category_input"
+    <Spinner
+        android:id="@+id/sp_category_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Categoría"
         android:visibility="gone" />
 
     <Button

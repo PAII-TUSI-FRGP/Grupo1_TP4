@@ -48,37 +48,6 @@ public class MainActivity extends AppCompatActivity {
         adaptadorViewPager.AgregarFragmento(new fragmentoModificar(), "Modificar");
         adaptadorViewPager.AgregarFragmento(new fragmentoListar(), "Listar");
         viewPager.setAdapter(adaptadorViewPager);
-
-        this.cargarCategorias(); //added by jp
-    }
-
-
-    public void cargarCategorias() {
-        DataCategoriaMainActivity dataCategoriaMainActivity = new DataCategoriaMainActivity(null, this);
-        dataCategoriaMainActivity.obtenerTodos(new DataCategoriaMainActivity.CategoriaCallback() {
-            @Override
-            public void onCategoriasObtenidas(List<Categoria> categorias) {
-                // Definir la posición del fragmento a obtener
-                int position = 0;
-
-                // Obtener el fragmento por posición
-                fragmentoAlta fragment = (fragmentoAlta) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewPager + ":" + position);
-
-                // Verificar si el fragmento es no nulo antes de llamar a cargarSpinner
-                if (fragment != null) {
-                    fragment.cargarSpinner(categorias); // Llama a cargarSpinner en el fragmento
-                } else {
-                    Log.e("FragmentError", "El fragmento no es del tipo esperado o es nulo");
-                }
-            }
-
-
-            @Override
-            public void onError(String mensaje) {
-                // Manejo de errores
-                Toast.makeText(MainActivity.this, "Error al obtener categorías: " + mensaje, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
 }

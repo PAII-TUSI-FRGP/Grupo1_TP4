@@ -19,6 +19,7 @@ public class DataCategoriaMainActivity {
     private Context context;
 
     public DataCategoriaMainActivity(Object object, Context context) {
+        this.object = object;
         this.context = context;
     }
 
@@ -104,12 +105,12 @@ public class DataCategoriaMainActivity {
             // Actualiza la UI en el hilo principal
             new android.os.Handler(context.getMainLooper()).post(() -> {
                 Log.d("SENTENCIASQL", "CATEGORIAS: " + listaCategorias.size());
-                callback.onCategoriasObtenidas(listaCategorias); // Llama al callback
+                callback.onResponse(listaCategorias); // Llama al callback
             });
         });
     }
     public interface CategoriaCallback {
-        void onCategoriasObtenidas(List<Categoria> categorias);
+        void onResponse(Object response);
         void onError(String mensaje);
     }
 

@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.grupo1_tp4.adapter.CategoriaSpinnerAdapter;
 import com.example.grupo1_tp4.conexion.DataArticuloMainActivity;
 import com.example.grupo1_tp4.conexion.DataCategoriaMainActivity;
 import com.example.grupo1_tp4.entidad.Articulo;
@@ -103,32 +104,19 @@ public class fragmentoAlta extends Fragment {
         DataCategoriaMainActivity dataCategoriaMainActivity = new DataCategoriaMainActivity(null, getActivity());
         dataCategoriaMainActivity.obtenerTodos(new DataCategoriaMainActivity.CategoriaCallback() {
             @Override
-            public void onCategoriasObtenidas(List<Categoria> categorias) {
-                fragmentoAlta.this.categorias = categorias;
-                // Inicializar el Spinner
-                Spinner spinner = getView().findViewById(R.id.spCategorias); // Cambia miSpinner por el ID real de tu Spinner
+            public void onResponse(Object response) {
+                fragmentoAlta.this.categorias = (List<Categoria>) response;
 
-                // Crear una lista para las descripciones
-                List<String> descripciones = new ArrayList<>();
-                final List<Integer> idsCategorias = new ArrayList<>(); // Lista para guardar los IDs
-
-                // Extraer descripciones e IDs
-                for (Categoria categoria : categorias) {
-                    descripciones.add(categoria.getDescripcion()); // Suponiendo que tienes un método getDescripcion()
-                    idsCategorias.add(categoria.getId()); // Suponiendo que tienes un método getId()
-                }
-
-                // Crear el ArrayAdapter
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, descripciones);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinner.setAdapter(adapter);
+                CategoriaSpinnerAdapter categoriaSpinnerAdapter = new CategoriaSpinnerAdapter(getContext(), categorias);
+                spCategorias.setAdapter(categoriaSpinnerAdapter);
 
                 // Manejar la selección del Spinner
-                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                spCategorias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        int categoriaSeleccionadaId = idsCategorias.get(position); // Obtiene el ID de la categoría seleccionada
-                        // Aquí puedes hacer lo que necesites con el ID seleccionado
+                        Categoria categoriaSeleccionada = (Categoria) spCategorias.getSelectedItem(); // Obtiene la categoría seleccionada
+                        // Aquí puedes hacer lo que necesites con la categoria seleccionada
+                        Toast.makeText(getContext(), "Categoría seleccionada: " + categoriaSeleccionada.getDescripcion(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -146,23 +134,6 @@ public class fragmentoAlta extends Fragment {
         });
     }
 
-    private List<Integer> categoriaIds; // Lista para almacenar los IDs de las categorías
-
-    protected void cargarSpinner(List<Categoria> categorias) {
-        List<String> descripciones = new ArrayList<>();
-        categoriaIds = new ArrayList<>(); // Inicializa la lista de IDs
-
-        for (Categoria categoria : categorias) {
-            descripciones.add(categoria.getDescripcion()); // Agrega la descripción al Spinner
-            categoriaIds.add(categoria.getId()); // Agrega el ID correspondiente
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, descripciones);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCategorias.setAdapter(adapter); // Asegúrate de tener una referencia a tu Spinner
-    }
-
-
     // Método para insertar un artículo
     private void insertarArticulo() {
         // Obtener los valores de los EditText
@@ -175,7 +146,7 @@ public class fragmentoAlta extends Fragment {
 
         if (posicionSeleccionada >= 0) {
             // Obtener la categoría seleccionada desde la lista de categorías
-            Categoria categoriaSeleccionada = categorias.get(posicionSeleccionada);
+            Categoria categoriaSeleccionada = (Categoria) spCategorias.getSelectedItem(); // Obtiene la categoría seleccionada
             int categoriaId = categoriaSeleccionada.getId(); // Obtener el ID de la categoría seleccionada
 
             // Verificar si los campos obligatorios están completos
