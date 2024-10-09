@@ -94,8 +94,7 @@ public class fragmentoAlta extends Fragment {
             @Override
             public void onClick(View v) {
 
-                insertarArticulo();
-            }
+                insertarArticulo();}
         });
     }
 
@@ -166,6 +165,11 @@ public class fragmentoAlta extends Fragment {
             dataArticuloMainActivity.insertar(articulo, new DataArticuloMainActivity.ArticuloCallback() {
                 @Override
                 public void onArticuloObtenido(Articulo articulo) {
+                    ptID.setText("");
+                    ptNombreProducto.setText("");
+                    ptStock.setText("");
+                    spCategorias.setSelection(0);
+
                     // Mostrar un mensaje de éxito si es necesario
                     Toast.makeText(getContext(), "Artículo agregado con éxito", Toast.LENGTH_SHORT).show();
                 }

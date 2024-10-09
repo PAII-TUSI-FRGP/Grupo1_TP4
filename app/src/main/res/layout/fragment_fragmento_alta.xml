@@ -7,30 +7,49 @@
     android:gravity="center"
     tools:context=".fragmentoAlta">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="@string/altaID"
+        android:textSize="18sp" />
+
     <EditText
         android:id="@+id/ptID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/altaID"
+
         android:inputType="text"
-        android:minHeight="48dp" />
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/altaNombreProducto"
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/ptNombreProducto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/altaNombreProducto"
         android:inputType="text"
         android:minHeight="48dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/altaSTOCK"
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/ptStock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/altaSTOCK"
         android:inputType="text"
         android:minHeight="48dp" />
 
@@ -39,7 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/altaCategoria"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
     <Spinner
         android:id="@+id/spCategorias"
